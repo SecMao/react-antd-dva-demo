@@ -1,0 +1,24 @@
+{
+  "entry": "src/index.js",
+  "env": {
+    "development": {
+      "extraBabelPlugins": [
+        "dva-hmr",
+        "transform-runtime",
+        ["import", [{ "libraryName": "antd", "style": true }]]
+      ]
+    },
+    "production": {
+      "extraBabelPlugins": [
+        "transform-runtime"
+      ]
+    }
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8080/reactsample",
+      "changeOrigin": true,
+      "pathRewrite": { "^/api" : "" }
+    }
+  }
+}
