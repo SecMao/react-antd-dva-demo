@@ -99,7 +99,6 @@ class OrgTreePanel extends React.Component {
    * @returns {Promise.<T>}
    */
   onTreeLoadData = (treeNode) => {
-    // TODO
     const {children, eventKey, pos} = treeNode.props;
     // 不重新请求
     if (!children) {
