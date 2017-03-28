@@ -5,6 +5,7 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
 import { Form, Row, Col, Input, Select, DatePicker } from 'antd';
+import {commonTimeRanges} from '../../utils/common';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -61,11 +62,11 @@ class CommFormUI extends React.Component {
                     </Select>;
                   case "DatePicker" :// 日期组件
                     return <DatePicker showTime={{ hideDisabledOptions: true }}
-                                       format={options.foramt || "YYYY-MM-DD HH:mm:ss"} />;
+                                       format={options.format || "YYYY-MM-DD HH:mm:ss"} />;
                   case 'RangePicker' :// 日期范围组件
                     const RangePicker = DatePicker.RangePicker;
-                    return <RangePicker showTime={{ hideDisabledOptions: true }}
-                                        format={options.foramt || "YYYY-MM-DD HH:mm:ss"} />;
+                    return <RangePicker showTime={{ hideDisabledOptions: true }} ranges={commonTimeRanges}
+                                        format={options.format || "YYYY-MM-DD HH:mm:ss"} />;
                   default :// 默认为文本框
                     return <Input placeholder={fields[i].label} disabled={options.disabled} />;
                 }
