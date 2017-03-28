@@ -1,0 +1,21 @@
+@media screen and (max-height: 700px) {
+  .slimCard > div[class^='ant-card-head'] {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+  }
+
+  .slimCard > div[class^='ant-card-extra'] {
+    right: 4px;
+    top: 4px;
+  }
+
+  .slimCard > div[class^='ant-card-body'] {
+    padding: 10px 24px;
+  }
+
+  .slimCard button {
+    padding: 1px 7px;
+    font-size: 11px;
+  }
+}
