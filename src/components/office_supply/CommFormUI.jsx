@@ -4,16 +4,35 @@
 
 import React, { PropTypes } from 'react';
 import moment from 'moment';
+import { connect } from 'dva';
 import { Form, Row, Col, Input, Select, DatePicker } from 'antd';
-import {commonTimeRanges} from '../../utils/common';
+import { commonTimeRanges } from '../../utils/common';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class CommFormUI extends React.Component {
-  resetFields = () => {
-    this.props.form.resetFields();
-  };
+  componentWillReceiveProps(nextProps) {
+    const { form, invokeKey: lastInvokeKey } = this.props;
+    const { invokeKey, commFormFuncName: funcName, commFormFuncCallback: callback } = nextProps;
+    if (invokeKey === lastInvokeKey) {
+      return;
+    }
+    switch (funcName) {
+      case 'getCommFormValues':
+        form.validateFieldsAndScroll((err, values) => {
+          if (err) { // 有错误则返回并自动提示
+            return;
+          }
+          typeof callback === "function" && callback(values, form.resetFields);
+        });
+        break;
+      case 'resetCommFormValues':
+        form.resetFields();
+        typeof callback === "function" && callback();
+        break;
+    }
+  }
 
   render() {
     const { currentData, fields, columns } = this.props;
@@ -96,4 +115,4 @@ CommFormUI.propTypes = {
   clearData: PropTypes.func
 };
 
-export default Form.create()(CommFormUI);
+export default connect(state => state.common.commFormInvoke)(Form.create()(CommFormUI));

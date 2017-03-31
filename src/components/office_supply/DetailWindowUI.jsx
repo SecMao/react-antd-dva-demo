@@ -4,26 +4,23 @@
 
 import React, { PropTypes } from 'react';
 import { Modal } from 'antd';
+import { connect } from 'dva';
 import CommFormUI from './CommFormUI';
 
 class DetailWindowUI extends React.Component {
-  formReference = (form) => {
-    this.form = form;
-  };
   // 点击模态窗口确认按钮
   handleOk = () => {
-    // 校验并滚动到出错位置
-    this.form.validateFieldsAndScroll((err, values) => {
-      if (err) { // 有错误则返回并自动提示
-        return;
-      }
-      // 保存数据并回调重置方法
-      this.props.saveData(values, this.resetFields);
+    this.props.dispatch({
+      type: 'common/invokeCommFormFunc',
+      payload: { funcName: 'getCommFormValues', callback: this.props.saveData }
     });
   };
   // 重置方法
   resetFields = () => {
-    this.form.resetFields();
+    this.props.dispatch({
+      type: 'common/invokeCommFormFunc',
+      payload: { funcName: 'resetCommFormValues', callback: undefined }
+    });
   };
 
   render() {
@@ -32,7 +29,7 @@ class DetailWindowUI extends React.Component {
     return (
       <Modal title={this.props.tipInfo} visible={this.props.modalVisible}
              onOk={this.handleOk} onCancel={() => this.props.onHideWindow(this.resetFields)} width="900px">
-        <CommFormUI ref={this.formReference} currentData={currentData} fields={fields} columns={2} />
+        <CommFormUI currentData={currentData} fields={fields} columns={2} />
       </Modal>
     );
   }
@@ -47,4 +44,4 @@ DetailWindowUI.propTypes = {
   saveData: PropTypes.func.isRequired,
 };
 
-export default DetailWindowUI;
+export default connect()(DetailWindowUI);

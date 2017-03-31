@@ -5,12 +5,10 @@
  */
 import React, { PropTypes } from 'react';
 import { Card, Row, Col, Button } from 'antd';
+import { connect } from 'dva';
 import CommFormUI from './CommFormUI';
 
 class SearchPanelUI extends React.Component {
-  formReference = (form) => {
-    this.form = form;
-  };
   // 查询方法
   handleSearch = (e) => {
     e.preventDefault();
@@ -18,19 +16,22 @@ class SearchPanelUI extends React.Component {
   };
   // 重置方法
   handleReset = () => {
-    this.form.resetFields();
-    this.reloadTable();
+    this.props.dispatch({
+      type: 'common/invokeCommFormFunc',
+      payload: { funcName: 'resetCommFormValues', callback: this.reloadTable }
+    });
   };
   reloadTable = () => {
-    this.form.validateFields((err, values) => {
-      this.props.reloadTableData(values);
+    this.props.dispatch({
+      type: 'common/invokeCommFormFunc',
+      payload: { funcName: 'getCommFormValues', callback: this.props.reloadTableData }
     });
   };
 
   render() {
     return (
       <Card title="查询" bordered={false} style={{ margin: '0px 0px 8px 0px' }}>
-        <CommFormUI ref={this.formReference} fields={this.props.fields} columns={3} />
+        <CommFormUI fields={this.props.fields} columns={3} />
         <Row gutter={40}>
           <Col span={24} style={{ textAlign: 'right' }}>
             <Button type="primary" onClick={this.handleSearch}>查询</Button>
@@ -50,4 +51,4 @@ SearchPanelUI.propTypes = {
   reloadTableData: PropTypes.func.isRequired,
 };
 
-export default SearchPanelUI;
+export default connect()(SearchPanelUI);

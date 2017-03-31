@@ -2,10 +2,9 @@
  * Created by Sec on 2017/3/9.
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { message } from 'antd';
 import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
 import moment from 'moment';
 import TableUI from './TableUI';
 import DetailWindowUI from './DetailWindowUI';
